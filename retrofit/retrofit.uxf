@@ -1,0 +1,1015 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <help_text/>
+  <zoom_level>2</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>490</x>
+      <y>318</y>
+      <w>96</w>
+      <h>146</h>
+    </coordinates>
+    <panel_attributes>Class
+Retrofit
+--
+-serviceMethodCache: Map&lt;Method, ServiceMethod&lt;?, ?&gt;&gt; 
+-callFactory: Factory
+-baseUrl: HttpUrl
+-converterFactories: List&lt;Factory&gt;
+-callAdapterFactories: List&lt;Factory&gt;
+-callbackExecutor: Executor
+-validateEagerly: boolean
+--
+-Retrofit(Factory, HttpUrl, List&lt;Factory&gt;, List&lt;Factory&gt;, Executor, boolean)
++create(Class&lt;T&gt;): T
+-eagerlyValidateMethods(Class&lt;?&gt;): void
+-loadServiceMethod(Method): ServiceMethod&lt;?, ?&gt;
++callFactory(): Factory
++baseUrl(): HttpUrl
++callAdapterFactories(): List&lt;Factory&gt;
++callAdapter(Type, Annotation[]): CallAdapter&lt;?, ?&gt;
++nextCallAdapter(Factory, Type, Annotation[]): CallAdapter&lt;?, ?&gt;
++converterFactories(): List&lt;Factory&gt;
++requestBodyConverter(Type, Annotation[], Annotation[]): Converter&lt;T, RequestBody&gt;
++nextRequestBodyConverter(Factory, Type, Annotation[], Annotation[]): Converter&lt;T, RequestBody&gt;
++responseBodyConverter(Type, Annotation[]): Converter&lt;ResponseBody, T&gt;
++nextResponseBodyConverter(Factory, Type, Annotation[]): Converter&lt;ResponseBody, T&gt;
++stringConverter(Type, Annotation[]): Converter&lt;T, String&gt;
++callbackExecutor(): Executor
++newBuilder(): Builder
+--
+{innerclass
+Class
+Builder
+--
+-platform: Platform
+-callFactory: Factory
+-baseUrl: HttpUrl
+-converterFactories: List&lt;Factory&gt; 
+-callAdapterFactories: List&lt;Factory&gt; 
+-callbackExecutor: Executor
+-validateEagerly: boolean
+--
+-Builder(Platform)
++Builder()
+-Builder(Retrofit)
++client(OkHttpClient): Builder
++callFactory(Factory): Builder
++baseUrl(String): Builder
++baseUrl(HttpUrl): Builder
++addConverterFactory(Factory): Builder
++addCallAdapterFactory(Factory): Builder
++callbackExecutor(Executor): Builder
++callAdapterFactories(): List&lt;Factory&gt;
++converterFactories(): List&lt;Factory&gt;
++validateEagerly(boolean): Builder
++build(): Retrofit
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>546</x>
+      <y>512</y>
+      <w>42</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>Interface
+Call
+--
++request(): Request
++execute(): Response
++enqueue(Callback): void
++cancel(): void
++isExecuted(): boolean
++isCanceled(): boolean
++clone(): Call
+--
+{innerclass
+Interface
+Factory
+--
++newCall(Request): Call
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>546</x>
+      <y>566</y>
+      <w>42</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Class
+OkHttpClient
+--
+-interceptors: List&lt;Interceptor&gt;
+-cookieJar: CookieJar
+-connectionPool: ConnectionPool
+-retryOnConnectionFailure: boolean
+--
++OkHttpClient()
+-OkHttpClient(Builder)
++dns(): Dns
++connectionPool(): ConnectionPool
++newCall(Request): Call
+--
+{innerclass
+Class
+Builder
+--
+-dispatcher: Dispatcher
+-connectionSpecs: List&lt;ConnectionSpec&gt;
+-interceptors: List&lt;Interceptor&gt; 
+-networkInterceptors: List&lt;Interceptor&gt; 
+-eventListenerFactory: Factory
+--
++Builder()
+-Builder(OkHttpClient)
++connectTimeout(long, TimeUnit): Builder
++readTimeout(long, TimeUnit): Builder
++cache(Cache): Builder
++dns(Dns): Builder
++build(): OkHttpClient
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>730</x>
+      <y>502</y>
+      <w>106</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>Interface
+Converter
+--
++convert(F): T
+--
+{innerclass
+Class
+Factory
+--
++responseBodyConverter(Type, Annotation[], Retrofit): Converter&lt;ResponseBody, ?&gt;
++requestBodyConverter(Type, Annotation[], Annotation[], Retrofit): Converter&lt;?, RequestBody&gt;
++stringConverter(Type, Annotation[], Retrofit): Converter&lt;?, String&gt;
+-getParameterUpperBound(int, ParameterizedType): Type
+-getRawType(Type): Class&lt;?&gt;
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1024</x>
+      <y>512</y>
+      <w>66</w>
+      <h>34</h>
+    </coordinates>
+    <panel_attributes>Interface
+CallAdapter
+--
++responseType(): Type
++adapt(Call&lt;R&gt;): T
+--
+{innerclass
+Class
+Factory
+--
++get(Type, Annotation[], Retrofit): CallAdapter&lt;?, ?&gt;
+-getParameterUpperBound(int, ParameterizedType): Type
+-getRawType(Type): Class&lt;?&gt;
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>898</x>
+      <y>468</y>
+      <w>76</w>
+      <h>74</h>
+    </coordinates>
+    <panel_attributes>Class
+Platform
+--
+-PLATFORM: Platform 
+--
+-get(): Platform
+-findPlatform(): Platform
+-defaultCallbackExecutor(): Executor
+-defaultCallAdapterFactory(Executor): Factory
+-isDefaultMethod(Method): boolean
+-invokeDefaultMethod(Method, Class&lt;?&gt;, Object, Object...): Object
+--
+{innerclass
+Class
+Java8
+--
+-isDefaultMethod(Method): boolean
+-invokeDefaultMethod(Method, Class&lt;?&gt;, Object, Object...): Object
+innerclass}
+{innerclass
+Class
+Android
+--
++defaultCallbackExecutor(): Executor
+-defaultCallAdapterFactory(Executor): Factory
+--
+{innerclass
+Class
+MainThreadExecutor
+--
+-handler: Handler 
+--
++execute(Runnable): void
+innerclass}
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>726</x>
+      <y>318</y>
+      <w>78</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>Class
+ServiceMethod
+--
+-PARAM: String 
+-PARAM_URL_REGEX: Pattern 
+-PARAM_NAME_REGEX: Pattern 
+-callFactory: Factory
+-callAdapter: CallAdapter&lt;R, T&gt;
+-baseUrl: HttpUrl
+-responseConverter: Converter&lt;ResponseBody, R&gt;
+-httpMethod: String
+-relativeUrl: String
+-headers: Headers
+-contentType: MediaType
+-hasBody: boolean
+-isFormEncoded: boolean
+-isMultipart: boolean
+-parameterHandlers: ParameterHandler&lt;?&gt;[]
+--
+-ServiceMethod(Builder&lt;R, T&gt;)
+-toCall(Object...): Call
+-adapt(Call&lt;R&gt;): T
+-toResponse(ResponseBody): R
+-parsePathParameters(String): Set&lt;String&gt;
+-boxIfPrimitive(Class&lt;?&gt;): Class&lt;?&gt;
+--
+{innerclass
+Class
+Builder
+--
+-retrofit: Retrofit
+-method: Method
+-callAdapter: CallAdapter&lt;T, R&gt;
+--
+-Builder(Retrofit, Method)
++build(): ServiceMethod
+-createCallAdapter(): CallAdapter&lt;T, R&gt;
+-parseMethodAnnotation(Annotation): void
+-parseHttpMethodAndPath(String, String, boolean): void
+-parseHeaders(String[]): Headers
+-parseParameter(int, Type, Annotation[]): ParameterHandler&lt;?&gt;
+-parseParameterAnnotation(int, Type, Annotation[], Annotation): ParameterHandler&lt;?&gt;
+-validatePathName(int, String): void
+-createResponseConverter(): Converter&lt;ResponseBody, T&gt;
+-methodError(String, Object...): RuntimeException
+-methodError(Throwable, String, Object...): RuntimeException
+-parameterError(Throwable, int, String, Object...): RuntimeException
+-parameterError(int, String, Object...): RuntimeException
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>422</x>
+      <y>510</y>
+      <w>54</w>
+      <h>114</h>
+    </coordinates>
+    <panel_attributes>Class
+OkHttpCall
+--
+-serviceMethod: ServiceMethod&lt;T, ?&gt;
+-args: Object[]
+-canceled: boolean
+-rawCall: Call
+-creationFailure: Throwable
+-executed: boolean
+--
+-OkHttpCall(ServiceMethod&lt;T, ?&gt;, Object[])
++clone(): OkHttpCall&lt;T&gt;
++request(): Request
++enqueue(Callback&lt;T&gt;): void
++isExecuted(): boolean
++execute(): Response&lt;T&gt;
+-createRawCall(): Call
+-parseResponse(Response): Response&lt;T&gt;
++cancel(): void
++isCanceled(): boolean
+--
+{innerclass
+Class
+NoContentResponseBody
+--
+-contentType: MediaType
+-contentLength: long
+--
+-NoContentResponseBody(MediaType, long)
++contentType(): MediaType
++contentLength(): long
++source(): BufferedSource
+innerclass}
+{innerclass
+Class
+ExceptionCatchingRequestBody
+--
+-delegate: ResponseBody
+-thrownException: IOException
+--
+-ExceptionCatchingRequestBody(ResponseBody)
++contentType(): MediaType
++contentLength(): long
++source(): BufferedSource
++close(): void
+-throwIfCaught(): void
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>852</x>
+      <y>334</y>
+      <w>62</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>Class
+RequestBuilder
+--
+-HEX_DIGITS: char[] 
+-PATH_SEGMENT_ALWAYS_ENCODE_SET: String 
+-method: String
+-baseUrl: HttpUrl
+-relativeUrl: String
+-urlBuilder: Builder
+-requestBuilder: Builder
+-contentType: MediaType
+-hasBody: boolean
+-multipartBuilder: Builder
+-formBuilder: Builder
+-body: RequestBody
+--
+-RequestBuilder(String, HttpUrl, String, Headers, MediaType, boolean, boolean, ...)
+-setRelativeUrl(Object): void
+-addHeader(String, String): void
+-addPathParam(String, String, boolean): void
+-canonicalizeForPath(String, boolean): String
+-canonicalizeForPath(Buffer, String, int, int, boolean): void
+-addQueryParam(String, String, boolean): void
+-addFormField(String, String, boolean): void
+-addPart(Headers, RequestBody): void
+-addPart(Part): void
+-setBody(RequestBody): void
+-build(): Request
+--
+{innerclass
+Class
+ContentTypeOverridingRequestBody
+--
+-delegate: RequestBody
+-contentType: MediaType
+--
+-ContentTypeOverridingRequestBody(RequestBody, MediaType)
++contentType(): MediaType
++contentLength(): long
++writeTo(BufferedSink): void
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>730</x>
+      <y>568</y>
+      <w>104</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>Class
+BuiltInConverters
+--
++responseBodyConverter(Type, Annotation[], Retrofit): Converter&lt;ResponseBody, ?&gt;
++requestBodyConverter(Type, Annotation[], Annotation[], Retrofit): Converter&lt;?, RequestBody&gt;
+--
+{innerclass
+Class
+VoidResponseBodyConverter
+--
+-INSTANCE: VoidResponseBodyConverter 
+--
++convert(ResponseBody): Void
+innerclass}
+{innerclass
+Class
+RequestBodyConverter
+--
+-INSTANCE: RequestBodyConverter 
+--
++convert(RequestBody): RequestBody
+innerclass}
+{innerclass
+Class
+StreamingResponseBodyConverter
+--
+-INSTANCE: StreamingResponseBodyConverter 
+--
++convert(ResponseBody): ResponseBody
+innerclass}
+{innerclass
+Class
+BufferingResponseBodyConverter
+--
+-INSTANCE: BufferingResponseBodyConverter 
+--
++convert(ResponseBody): ResponseBody
+innerclass}
+{innerclass
+Class
+ToStringConverter
+--
+-INSTANCE: ToStringConverter 
+--
++convert(Object): String
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1140</x>
+      <y>630</y>
+      <w>56</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>Class
+RxJava2CallAdapter
+--
+-responseType: Type
+-scheduler: Scheduler
+-isAsync: boolean
+-isResult: boolean
+-isBody: boolean
+-isFlowable: boolean
+-isSingle: boolean
+-isMaybe: boolean
+-isCompletable: boolean
+--
+-RxJava2CallAdapter(Type, Scheduler, boolean, boolean, boolean, boolean, boolean, ...)
++responseType(): Type
++adapt(Call&lt;R&gt;): Object
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1030</x>
+      <y>586</y>
+      <w>64</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>Class
+DefaultCallAdapterFactory
+--
+-INSTANCE: Factory 
+--
++get(Type, Annotation[], Retrofit): CallAdapter&lt;?, ?&gt;
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>956</x>
+      <y>568</y>
+      <w>60</w>
+      <h>58</h>
+    </coordinates>
+    <panel_attributes>Class
+ExecutorCallAdapterFactory
+--
+-callbackExecutor: Executor
+--
+-ExecutorCallAdapterFactory(Executor)
++get(Type, Annotation[], Retrofit): CallAdapter&lt;?, ?&gt;
+--
+{innerclass
+Class
+ExecutorCallbackCall
+--
+-callbackExecutor: Executor
+-delegate: Call&lt;T&gt;
+--
+-ExecutorCallbackCall(Executor, Call&lt;T&gt;)
++enqueue(Callback&lt;T&gt;): void
++isExecuted(): boolean
++execute(): Response&lt;T&gt;
++cancel(): void
++isCanceled(): boolean
++clone(): Call&lt;T&gt;
++request(): Request
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1130</x>
+      <y>572</y>
+      <w>70</w>
+      <h>34</h>
+    </coordinates>
+    <panel_attributes>Class
+RxJava2CallAdapterFactory
+--
+-scheduler: Scheduler
+-isAsync: boolean
+--
++create(): RxJava2CallAdapterFactory
++createAsync(): RxJava2CallAdapterFactory
++createWithScheduler(Scheduler): RxJava2CallAdapterFactory
+-RxJava2CallAdapterFactory(Scheduler, boolean)
++get(Type, Annotation[], Retrofit): CallAdapter&lt;?, ?&gt;
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>846</x>
+      <y>568</y>
+      <w>78</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes>Class
+FastJsonConverterFactory
+--
+-mParserConfig: ParserConfig
+-featureValues: int
+-features: Feature[]
+-serializeConfig: SerializeConfig
+-serializerFeatures: SerializerFeature[]
+--
++create(): FastJsonConverterFactory
+-FastJsonConverterFactory()
++responseBodyConverter(Type, Annotation[], Retrofit): Converter&lt;ResponseBody, ?&gt;
++requestBodyConverter(Type, Annotation[], Annotation[], Retrofit): Converter&lt;?, RequestBody&gt;
++getParserConfig(): ParserConfig
++setParserConfig(ParserConfig): FastJsonConverterFactory
++getParserFeatureValues(): int
++setParserFeatureValues(int): FastJsonConverterFactory
++getParserFeatures(): Feature[]
++setParserFeatures(Feature[]): FastJsonConverterFactory
++getSerializeConfig(): SerializeConfig
++setSerializeConfig(SerializeConfig): FastJsonConverterFactory
++getSerializerFeatures(): SerializerFeature[]
++setSerializerFeatures(SerializerFeature[]): FastJsonConverterFactory
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>842</x>
+      <y>656</y>
+      <w>78</w>
+      <h>26</h>
+    </coordinates>
+    <panel_attributes>Class
+FastJsonRequestBodyConverter
+--
+-MEDIA_TYPE: MediaType
+-serializeConfig: SerializeConfig
+-serializerFeatures: SerializerFeature[]
+--
+-FastJsonRequestBodyConverter(SerializeConfig, SerializerFeature...)
++convert(T): RequestBody
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>928</x>
+      <y>656</y>
+      <w>78</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>Class
+FastJsonResponseBodyConverter
+--
+-EMPTY_SERIALIZER_FEATURES: Feature[]
+-mType: Type
+-config: ParserConfig
+-featureValues: int
+-features: Feature[]
+--
+-FastJsonResponseBodyConverter(Type, ParserConfig, int, Feature...)
++convert(ResponseBody): T
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>634</x>
+      <y>568</y>
+      <w>86</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>Class
+GsonConverterFactory
+--
+-gson: Gson
+--
++create(): GsonConverterFactory
++create(Gson): GsonConverterFactory
+-GsonConverterFactory(Gson)
++responseBodyConverter(Type, Annotation[], Retrofit): Converter&lt;ResponseBody, ?&gt;
++requestBodyConverter(Type, Annotation[], Annotation[], Retrofit): Converter&lt;?, RequestBody&gt;
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>638</x>
+      <y>612</y>
+      <w>66</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>Class
+GsonRequestBodyConverter
+--
+-MEDIA_TYPE: MediaType 
+-UTF_8: Charset 
+-gson: Gson
+-adapter: TypeAdapter&lt;T&gt;
+--
+-GsonRequestBodyConverter(Gson, TypeAdapter&lt;T&gt;)
++convert(T): RequestBody
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>638</x>
+      <y>650</y>
+      <w>66</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>Class
+GsonResponseBodyConverter
+--
+-gson: Gson
+-adapter: TypeAdapter&lt;T&gt;
+--
+-GsonResponseBodyConverter(Gson, TypeAdapter&lt;T&gt;)
++convert(ResponseBody): T
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1096</x>
+      <y>688</y>
+      <w>62</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>Class
+CallExecuteObservable
+--
+-originalCall: Call&lt;T&gt;
+--
+-CallExecuteObservable(Call&lt;T&gt;)
+-subscribeActual(Observer&lt;? super Response&lt;T&gt;&gt;): void
+--
+{innerclass
+Class
+CallDisposable
+--
+-call: Call&lt;?&gt;
+-disposed: boolean
+--
+-CallDisposable(Call&lt;?&gt;)
++dispose(): void
++isDisposed(): boolean
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1186</x>
+      <y>686</y>
+      <w>66</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>Class
+CallEnqueueObservable
+--
+-originalCall: Call&lt;T&gt;
+--
+-CallEnqueueObservable(Call&lt;T&gt;)
+-subscribeActual(Observer&lt;? super Response&lt;T&gt;&gt;): void
+--
+{innerclass
+Class
+CallCallback
+--
+-call: Call&lt;?&gt;
+-observer: Observer&lt;? super Response&lt;T&gt;&gt;
+-disposed: boolean
+-terminated: boolean 
+--
+-CallCallback(Call&lt;?&gt;, Observer&lt;? super Response&lt;T&gt;&gt;)
++onResponse(Call&lt;T&gt;, Response&lt;T&gt;): void
++onFailure(Call&lt;T&gt;, Throwable): void
++dispose(): void
++isDisposed(): boolean
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>978</x>
+      <y>546</y>
+      <w>48</w>
+      <h>26</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>220.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1092</x>
+      <y>544</y>
+      <w>82</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;390.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1058</x>
+      <y>550</y>
+      <w>6</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>974</x>
+      <y>490</y>
+      <w>54</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>250.0;200.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>834</x>
+      <y>486</y>
+      <w>66</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;160.0;310.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>564</x>
+      <y>550</y>
+      <w>6</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>492</x>
+      <y>566</y>
+      <w>42</w>
+      <h>94</h>
+    </coordinates>
+    <panel_attributes>Class
+RealCall
+--
+-client: OkHttpClient
+-retryAndFollowUpInterceptor: RetryAndFollowUpInterceptor
+-eventListener: EventListener
+-originalRequest: Request
+-forWebSocket: boolean
+-executed: boolean
+--
+-RealCall(OkHttpClient, Request, boolean)
+-newRealCall(OkHttpClient, Request, boolean): RealCall
++request(): Request
++execute(): Response
+-captureCallStackTrace(): void
++enqueue(Callback): void
++cancel(): void
++isExecuted(): boolean
++isCanceled(): boolean
++clone(): RealCall
+-streamAllocation(): StreamAllocation
+-toLoggableString(): String
+-redactedUrl(): String
+-getResponseWithInterceptorChain(): Response
+--
+{innerclass
+Class
+AsyncCall
+--
+-responseCallback: Callback
+--
+-AsyncCall(Callback)
+-host(): String
+-request(): Request
+-get(): RealCall
+-execute(): void
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>762</x>
+      <y>370</y>
+      <w>88</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;420.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>478</x>
+      <y>530</y>
+      <w>72</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>340.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>510</x>
+      <y>534</y>
+      <w>38</w>
+      <h>34</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>170.0;10.0;10.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>680</x>
+      <y>526</y>
+      <w>50</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>230.0;10.0;10.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>774</x>
+      <y>538</y>
+      <w>6</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>838</x>
+      <y>530</y>
+      <w>46</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;210.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>888</x>
+      <y>634</y>
+      <w>6</w>
+      <h>22</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>916</x>
+      <y>636</y>
+      <w>42</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>190.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1164</x>
+      <y>606</y>
+      <w>6</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1198</x>
+      <y>664</y>
+      <w>20</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>80.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1124</x>
+      <y>662</y>
+      <w>16</w>
+      <h>22</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;90.0;60.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>942</x>
+      <y>542</y>
+      <w>36</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>160.0;120.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>

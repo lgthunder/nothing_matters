@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <help_text>Interface
+IPresenter
+--
++onStart(): void
++onDestroy(): void
+</help_text>
+  <zoom_level>9</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1647</x>
+      <y>270</y>
+      <w>261</w>
+      <h>198</h>
+    </coordinates>
+    <panel_attributes>Class
+BaseHolder
+--
+-mOnViewClickListener: OnViewClickListener 
+-TAG: String 
+--
++BaseHolder(View)
++setData(T, int): void
+-onRelease(): void
++onClick(View): void
++setOnItemClickListener(OnViewClickListener): void
+--
+{innerclass
+Interface
+OnViewClickListener
+--
++onViewClick(View, int): void
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1647</x>
+      <y>540</y>
+      <w>261</w>
+      <h>153</h>
+    </coordinates>
+    <panel_attributes>Class
+UserItemHolder
+--
+-mAvatar: ImageView
+-mName: TextView
+-mAppComponent: AppComponent
+-mImageLoader: ImageLoader
+--
++UserItemHolder(View)
++setData(User, int): void
+-onRelease(): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1764</x>
+      <y>459</y>
+      <w>27</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2088</x>
+      <y>270</y>
+      <w>324</w>
+      <h>279</h>
+    </coordinates>
+    <panel_attributes>Class
+DefaultAdapter
+--
+-mInfos: List&lt;T&gt;
+-mOnItemClickListener: OnRecyclerViewItemClickListener 
+-mHolder: BaseHolder&lt;T&gt;
+--
++DefaultAdapter(List&lt;T&gt;)
++onCreateViewHolder(ViewGroup, int): BaseHolder&lt;T&gt;
++onBindViewHolder(BaseHolder&lt;T&gt;, int): void
++getItemCount(): int
++getInfos(): List&lt;T&gt;
++getItem(int): T
++getHolder(View, int): BaseHolder&lt;T&gt;
++getLayoutId(int): int
++releaseAllHolder(RecyclerView): void
++setOnItemClickListener(OnRecyclerViewItemClickListener): void
+--
+{innerclass
+Interface
+OnRecyclerViewItemClickListener
+--
++onItemClick(View, int, T, int): void
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2088</x>
+      <y>621</y>
+      <w>333</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>Class
+UserAdapter
+--
++UserAdapter(List&lt;User&gt;)
++getHolder(View, int): BaseHolder&lt;User&gt;
++getLayoutId(int): int
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2232</x>
+      <y>540</y>
+      <w>27</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>972</x>
+      <y>270</y>
+      <w>207</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>Interface
+Lifecycleable
+--
++provideLifecycleSubject(): Subject&lt;E&gt;
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1251</x>
+      <y>270</y>
+      <w>243</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>Interface
+IActivity
+--
++provideCache(): Cache&lt;String, Object&gt;
++setupActivityComponent(AppComponent): void
++useEventBus(): boolean
++initView(Bundle): int
++initData(Bundle): void
++useFragment(): boolean
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1062</x>
+      <y>531</y>
+      <w>270</w>
+      <h>207</h>
+    </coordinates>
+    <panel_attributes>Class
+BaseActivity
+--
+-TAG: String 
+-mLifecycleSubject: BehaviorSubject&lt;ActivityEvent&gt; 
+-mCache: Cache&lt;String, Object&gt;
+-mUnbinder: Unbinder
+-mPresenter: P
+--
++provideCache(): Cache&lt;String, Object&gt;
++provideLifecycleSubject(): Subject&lt;ActivityEvent&gt;
++onCreateView(String, Context, AttributeSet): View
+-onCreate(Bundle): void
+-onDestroy(): void
++useEventBus(): boolean
++useFragment(): boolean
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>18</x>
+      <y>279</y>
+      <w>189</w>
+      <h>81</h>
+    </coordinates>
+    <panel_attributes>Interface
+IPresenter
+--
++onStart(): void
++onDestroy(): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>144</x>
+      <y>513</y>
+      <w>243</w>
+      <h>216</h>
+    </coordinates>
+    <panel_attributes>Class
+BasePresenter
+--
+-TAG: String 
+-mCompositeDisposable: CompositeDisposable
+-mModel: M
+-mRootView: V
+--
++BasePresenter(M, V)
++BasePresenter(V)
++BasePresenter()
++onStart(): void
++onDestroy(): void
+-onDestroy(LifecycleOwner): void
++useEventBus(): boolean
++addDispose(Disposable): void
++unDispose(): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>720</x>
+      <y>270</y>
+      <w>189</w>
+      <h>117</h>
+    </coordinates>
+    <panel_attributes>Interface
+IView
+--
++showLoading(): void
++hideLoading(): void
++showMessage(String): void
++launchActivity(Intent): void
++killMyself(): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>450</x>
+      <y>270</y>
+      <w>189</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>Interface
+IModel
+--
++onDestroy(): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>225</x>
+      <y>279</y>
+      <w>198</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>Interface
+LifecycleObserver
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>99</x>
+      <y>351</y>
+      <w>189</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;190.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>261</x>
+      <y>315</y>
+      <w>72</w>
+      <h>216</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>60.0;10.0;10.0;220.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>270</x>
+      <y>324</y>
+      <w>270</w>
+      <h>207</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>280.0;10.0;10.0;210.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>270</x>
+      <y>378</y>
+      <w>549</w>
+      <h>153</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>590.0;10.0;10.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>153</x>
+      <y>873</y>
+      <w>207</w>
+      <h>216</h>
+    </coordinates>
+    <panel_attributes>Class
+UserPresenter
+--
+-mErrorHandler: RxErrorHandler
+-mAppManager: AppManager
+-mApplication: Application
+-mUsers: List&lt;User&gt;
+-mAdapter: Adapter
+-lastUserId: int 
+-isFirst: boolean 
+-preEndIndex: int
+--
++UserPresenter(Model, View)
+-onCreate(): void
++requestUsers(boolean): void
+-requestFromModel(boolean): void
++onDestroy(): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>243</x>
+      <y>720</y>
+      <w>27</w>
+      <h>171</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>801</x>
+      <y>468</y>
+      <w>189</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>Interface
+UserContract
+--
+{innerclass
+Interface
+View
+--
++startLoadMore(): void
++endLoadMore(): void
++getActivity(): Activity
++getRxPermissions(): RxPermissions
+innerclass}
+{innerclass
+Interface
+Model
+--
++getUsers(int, boolean): Observable&lt;List&lt;User&gt;&gt;
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>981</x>
+      <y>369</y>
+      <w>189</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>Interface
+ActivityLifecycleable
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1062</x>
+      <y>324</y>
+      <w>27</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1053</x>
+      <y>414</y>
+      <w>162</w>
+      <h>135</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;160.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1188</x>
+      <y>387</y>
+      <w>198</w>
+      <h>162</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>200.0;10.0;10.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>531</x>
+      <y>513</y>
+      <w>225</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>Class
+BaseModel
+--
+-mRepositoryManager: IRepositoryManager
+--
++BaseModel(IRepositoryManager)
++onDestroy(): void
+-onDestroy(LifecycleOwner): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>324</x>
+      <y>315</y>
+      <w>333</w>
+      <h>216</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;350.0;220.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>540</x>
+      <y>324</y>
+      <w>117</w>
+      <h>207</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;110.0;210.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>531</x>
+      <y>729</y>
+      <w>243</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>Class
+UserModel
+--
++USERS_PER_PAGE: int 
+--
++UserModel(IRepositoryManager)
++getUsers(int, boolean): Observable&lt;List&lt;User&gt;&gt;
+-onPause(): void
++onDestroy(): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>639</x>
+      <y>612</y>
+      <w>27</w>
+      <h>135</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>837</x>
+      <y>378</y>
+      <w>378</w>
+      <h>171</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;400.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>999</x>
+      <y>0</y>
+      <w>234</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>Interface
+UserComponent
+--
++inject(UserActivity): void
+--
+{innerclass
+Interface
+Builder
+--
++view(View): Builder
++appComponent(AppComponent): Builder
++build(): UserComponent
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>675</x>
+      <y>0</y>
+      <w>252</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>Class
+UserModule
+--
+-bindUserModel(UserModel): Model
+-provideRxPermissions(View): RxPermissions
+-provideLayoutManager(View): LayoutManager
+-provideUserList(): List&lt;User&gt;
+-provideUserAdapter(List&lt;User&gt;): Adapter
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

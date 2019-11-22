@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>4</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>300</x>
+      <y>408</y>
+      <w>84</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>Interface
+Consumer
+--
++accept(T): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>400</x>
+      <y>408</y>
+      <w>84</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>Interface
+Function
+--
++apply(T): R
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>400</y>
+      <w>84</w>
+      <h>320</h>
+    </coordinates>
+    <panel_attributes>Class
+Scheduler
+--
+-CLOCK_DRIFT_TOLERANCE_NANOSECONDS: long
+--
++clockDriftTolerance(): long
++createWorker(): Worker
++now(TimeUnit): long
++start(): void
++shutdown(): void
++scheduleDirect(Runnable): Disposable
++scheduleDirect(Runnable, long, TimeUnit): Disposable
++schedulePeriodicallyDirect(Runnable, long, long, TimeUnit): Disposable
++when(Function&lt;Flowable&lt;Flowable&lt;Completable&gt;&gt;, Completable&gt;): S
+--
+{innerclass
+Class
+Worker
+--
++schedule(Runnable): Disposable
++schedule(Runnable, long, TimeUnit): Disposable
++schedulePeriodically(Runnable, long, long, TimeUnit): Disposable
++now(TimeUnit): long
+--
+{innerclass
+Class
+PeriodicTask
+--
+-decoratedRun: Runnable
+-sd: SequentialDisposable
+-periodInNanoseconds: long
+-count: long
+-lastNowNanoseconds: long
+-startInNanoseconds: long
+--
+-PeriodicTask(long, Runnable, long, SequentialDisposable, long)
++run(): void
++getWrappedRunnable(): Runnable
+innerclass}
+innerclass}
+{innerclass
+Class
+PeriodicDirectTask
+--
+-run: Runnable
+-worker: Worker
+-disposed: boolean
+--
+-PeriodicDirectTask(Runnable, Worker)
++run(): void
++dispose(): void
++isDisposed(): boolean
++getWrappedRunnable(): Runnable
+innerclass}
+{innerclass
+Class
+DisposeTask
+--
+-decoratedRun: Runnable
+-w: Worker
+-runner: Thread
+--
+-DisposeTask(Runnable, Worker)
++run(): void
++dispose(): void
++isDisposed(): boolean
++getWrappedRunnable(): Runnable
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>520</x>
+      <y>408</y>
+      <w>84</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>Interface
+Callable
+--
++call(): V
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>180</x>
+      <y>408</y>
+      <w>92</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>Interface
+Publisher
+--
++subscribe(Subscriber&lt;? super T&gt;): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>180</x>
+      <y>316</y>
+      <w>88</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>Interface
+Subscriber
+--
++onSubscribe(Subscription): void
++onNext(T): void
++onError(Throwable): void
++onComplete(): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>284</x>
+      <y>320</y>
+      <w>84</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>Interface
+Subscription
+--
++request(long): void
++cancel(): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>188</x>
+      <y>472</y>
+      <w>84</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Class
+Flowable
+--
++
++
++
++
++
++
+...
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>224</x>
+      <y>436</y>
+      <w>12</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>176</x>
+      <y>556</y>
+      <w>116</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>Class
+ConnectableFlowable
+--
++connect(Consumer&lt;? super Disposable&gt;): void
++connect(): Disposable
++refCount(): Flowable&lt;T&gt;
++autoConnect(): Flowable&lt;T&gt;
++autoConnect(int): Flowable&lt;T&gt;
++autoConnect(int, Consumer&lt;? super Disposable&gt;): Flowable&lt;T&gt;
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>224</x>
+      <y>532</y>
+      <w>12</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>408</x>
+      <y>320</y>
+      <w>56</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>Interface
+Action
+--
++run(): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>628</x>
+      <y>284</y>
+      <w>112</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>Class
+Notification
+--
+-value: Object
+-COMPLETE: Notification&lt;Object&gt; 
+--
+-Notification(Object)
++isOnComplete(): boolean
++isOnError(): boolean
++isOnNext(): boolean
++getValue(): T
++getError(): Throwable
++createOnNext(T): Notification&lt;T&gt;
++createOnError(Throwable): Notification&lt;T&gt;
++createOnComplete(): Notification&lt;T&gt;
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>632</x>
+      <y>408</y>
+      <w>84</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>Interface
+Observer
+--
++onSubscribe(Disposable): void
++onNext(T): void
++onError(Throwable): void
++onComplete(): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>740</x>
+      <y>408</y>
+      <w>84</w>
+      <h>52</h>
+    </coordinates>
+    <panel_attributes>Interface
+Future
+--
++cancel(boolean): boolean
++isCancelled(): boolean
++isDone(): boolean
++get(): V
++get(long, TimeUnit): V
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>940</x>
+      <y>408</y>
+      <w>64</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>Interface
+Disposable
+--
++dispose(): void
++isDisposed(): boolean
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>712</x>
+      <y>572</y>
+      <w>84</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>Class
+CountDownLatch
+--
+-sync: Sync
+--
++CountDownLatch(int)
++await(): void
++await(long, TimeUnit): boolean
++countDown(): void
++getCount(): long
+--
+{innerclass
+Class
+Sync
+--
+-serialVersionUID: long 
+--
+-Sync(int)
+-getCount(): int
+-tryAcquireShared(int): int
+-tryReleaseShared(int): boolean
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1124</x>
+      <y>408</y>
+      <w>84</w>
+      <h>52</h>
+    </coordinates>
+    <panel_attributes>Interface
+SimpleQueue
+--
++offer(T): boolean
++offer(T, T): boolean
++poll(): T
++isEmpty(): boolean
++clear(): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1064</x>
+      <y>524</y>
+      <w>84</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Interface
+QueueFuseable
+--
++NONE: int 
++SYNC: int 
++ASYNC: int 
++ANY: int 
++BOUNDARY: int 
+--
++requestFusion(int): int
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1064</x>
+      <y>620</y>
+      <w>84</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>Class
+BasicFuseableObserver
+--
+-actual: Observer&lt;? super R&gt;
+-s: Disposable
+-qs: QueueDisposable&lt;T&gt;
+-done: boolean
+-sourceMode: int
+--
++BasicFuseableObserver(Observer&lt;? super R&gt;)
++onSubscribe(Disposable): void
+-beforeDownstream(): boolean
+-afterDownstream(): void
++onError(Throwable): void
+-fail(Throwable): void
++onComplete(): void
+-transitiveBoundaryFusion(int): int
++dispose(): void
++isDisposed(): boolean
++isEmpty(): boolean
++clear(): void
++offer(R): boolean
++offer(R, R): boolean
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>928</x>
+      <y>596</y>
+      <w>84</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>Interface
+QueueSubscription
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1200</x>
+      <y>528</y>
+      <w>84</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>Interface
+SimplePlainQueue
+--
++poll(): T
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1164</x>
+      <y>456</y>
+      <w>88</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;200.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1100</x>
+      <y>456</y>
+      <w>76</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>170.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1380</x>
+      <y>408</y>
+      <w>104</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>Interface
+SingleSource
+--
++subscribe(SingleObserver&lt;? super T&gt;): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1384</x>
+      <y>480</y>
+      <w>104</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>Class
+Single
+--
++subscribe(SingleObserver&lt;? super T&gt;): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1540</x>
+      <y>408</y>
+      <w>84</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Interface
+SingleObserver
+--
++onSubscribe(Disposable): void
++onSuccess(T): void
++onError(Throwable): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1688</x>
+      <y>408</y>
+      <w>84</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>Interface
+LambdaConsumerIntrospection
+--
++hasCustomOnError(): boolean
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1816</x>
+      <y>408</y>
+      <w>84</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>Class
+AtomicReference
+--
+-serialVersionUID: long 
+-U: Unsafe 
+-VALUE: long
+-value: V
+--
++AtomicReference(V)
++AtomicReference()
++get(): V
++set(V): void
++lazySet(V): void
++compareAndSet(V, V): boolean
++weakCompareAndSet(V, V): boolean
++getAndSet(V): V
++getAndUpdate(UnaryOperator&lt;V&gt;): V
++updateAndGet(UnaryOperator&lt;V&gt;): V
++getAndAccumulate(V, BinaryOperator&lt;V&gt;): V
++accumulateAndGet(V, BinaryOperator&lt;V&gt;): V
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

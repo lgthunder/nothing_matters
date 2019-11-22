@@ -1,0 +1,1338 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>2</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>960</x>
+      <y>230</y>
+      <w>50</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Interface
+Interceptor
+--
++intercept(Chain): Response
+--
+{innerclass
+Interface
+Chain
+--
++request(): Request
++proceed(Request): Response
++connection(): Connection
++call(): Call
++connectTimeoutMillis(): int
++withConnectTimeout(int, TimeUnit): Chain
++readTimeoutMillis(): int
++withReadTimeout(int, TimeUnit): Chain
++writeTimeoutMillis(): int
++withWriteTimeout(int, TimeUnit): Chain
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>832</x>
+      <y>294</y>
+      <w>72</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>Class
+CacheInterceptor
+--
+-cache: InternalCache
+--
++CacheInterceptor(InternalCache)
++intercept(Chain): Response
+-stripBody(Response): Response
+-cacheWritingResponse(CacheRequest, Response): Response
+-combine(Headers, Headers): Headers
+-isEndToEnd(String): boolean
+-isContentSpecificHeader(String): boolean
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>842</x>
+      <y>340</y>
+      <w>58</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>Interface
+InternalCache
+--
++get(Request): Response
++put(Response): CacheRequest
++remove(Request): void
++update(Response, Response): void
++trackConditionalCacheHit(): void
++trackResponse(CacheStrategy): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>840</x>
+      <y>376</y>
+      <w>66</w>
+      <h>244</h>
+    </coordinates>
+    <panel_attributes>Class
+Cache
+--
+-VERSION: int 
+-ENTRY_METADATA: int 
+-ENTRY_BODY: int 
+-ENTRY_COUNT: int 
+-internalCache: InternalCache
+-cache: DiskLruCache
+-writeSuccessCount: int
+-writeAbortCount: int
+-networkCount: int
+-hitCount: int
+-requestCount: int
+--
++Cache(File, long)
+-Cache(File, long, FileSystem)
++key(HttpUrl): String
+-get(Request): Response
+-put(Response): CacheRequest
+-remove(Request): void
+-update(Response, Response): void
+-abortQuietly(Editor): void
++initialize(): void
++delete(): void
++evictAll(): void
++urls(): Iterator&lt;String&gt;
++writeAbortCount(): int
++writeSuccessCount(): int
++size(): long
++maxSize(): long
++flush(): void
++close(): void
++directory(): File
++isClosed(): boolean
+-trackResponse(CacheStrategy): void
+-trackConditionalCacheHit(): void
++networkCount(): int
++hitCount(): int
++requestCount(): int
+-readInt(BufferedSource): int
+--
+{innerclass
+Class
+CacheResponseBody
+--
+-snapshot: Snapshot
+-bodySource: BufferedSource
+-contentType: String
+-contentLength: String
+--
+-CacheResponseBody(Snapshot, String, String)
++contentType(): MediaType
++contentLength(): long
++source(): BufferedSource
+innerclass}
+{innerclass
+Class
+Entry
+--
+-SENT_MILLIS: String
+-RECEIVED_MILLIS: String
+-url: String
+-varyHeaders: Headers
+-requestMethod: String
+-protocol: Protocol
+-code: int
+-message: String
+-responseHeaders: Headers
+-handshake: Handshake
+-sentRequestMillis: long
+-receivedResponseMillis: long
+--
+-Entry(Source)
+-Entry(Response)
++writeTo(Editor): void
+-isHttps(): boolean
+-readCertificateList(BufferedSource): List&lt;Certificate&gt;
+-writeCertList(BufferedSink, List&lt;Certificate&gt;): void
++matches(Request, Response): boolean
++response(Snapshot): Response
+innerclass}
+{innerclass
+Class
+CacheRequestImpl
+--
+-editor: Editor
+-cacheOut: Sink
+-body: Sink
+-done: boolean
+--
+-CacheRequestImpl(Editor)
++abort(): void
++body(): Sink
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>690</x>
+      <y>500</y>
+      <w>54</w>
+      <h>82</h>
+    </coordinates>
+    <panel_attributes>Class
+FormBody
+--
+-CONTENT_TYPE: MediaType 
+-encodedNames: List&lt;String&gt;
+-encodedValues: List&lt;String&gt;
+--
+-FormBody(List&lt;String&gt;, List&lt;String&gt;)
++size(): int
++encodedName(int): String
++name(int): String
++encodedValue(int): String
++value(int): String
++contentType(): MediaType
++contentLength(): long
++writeTo(BufferedSink): void
+-writeOrCountBytes(BufferedSink, boolean): long
+--
+{innerclass
+Class
+Builder
+--
+-names: List&lt;String&gt; 
+-values: List&lt;String&gt; 
+-charset: Charset
+--
++Builder()
++Builder(Charset)
++add(String, String): Builder
++addEncoded(String, String): Builder
++build(): FormBody
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>608</x>
+      <y>218</y>
+      <w>48</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>Class
+Request
+--
+-url: HttpUrl
+-method: String
+-headers: Headers
+-body: RequestBody
+-tag: Object
+-cacheControl: CacheControl
+--
+-Request(Builder)
++url(): HttpUrl
++method(): String
++headers(): Headers
++header(String): String
++headers(String): List&lt;String&gt;
++body(): RequestBody
++tag(): Object
++newBuilder(): Builder
++cacheControl(): CacheControl
++isHttps(): boolean
+--
+{innerclass
+Class
+Builder
+--
+-url: HttpUrl
+-method: String
+-headers: Builder
+-body: RequestBody
+-tag: Object
+--
++Builder()
+-Builder(Request)
++url(HttpUrl): Builder
++url(String): Builder
++url(URL): Builder
++header(String, String): Builder
++addHeader(String, String): Builder
++removeHeader(String): Builder
++headers(Headers): Builder
++cacheControl(CacheControl): Builder
++get(): Builder
++head(): Builder
++post(RequestBody): Builder
++delete(RequestBody): Builder
++delete(): Builder
++put(RequestBody): Builder
++patch(RequestBody): Builder
++method(String, RequestBody): Builder
++tag(Object): Builder
++build(): Request
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>680</x>
+      <y>350</y>
+      <w>50</w>
+      <h>94</h>
+    </coordinates>
+    <panel_attributes>Class
+Headers
+--
+-namesAndValues: String[]
+--
+-Headers(Builder)
+-Headers(String[])
++get(String): String
++getDate(String): Date
++size(): int
++name(int): String
++value(int): String
++names(): Set&lt;String&gt;
++values(String): List&lt;String&gt;
++byteCount(): long
++newBuilder(): Builder
++toMultimap(): Map&lt;String, List&lt;String&gt;&gt;
+-get(String[], String): String
++of(String...): Headers
++of(Map&lt;String, String&gt;): Headers
+--
+{innerclass
+Class
+Builder
+--
+-namesAndValues: List&lt;String&gt; 
+--
+-addLenient(String): Builder
++add(String): Builder
++add(String, String): Builder
+-addLenient(String, String): Builder
++removeAll(String): Builder
++set(String, String): Builder
+-checkNameAndValue(String, String): void
++get(String): String
++build(): Headers
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>398</x>
+      <y>306</y>
+      <w>90</w>
+      <h>378</h>
+    </coordinates>
+    <panel_attributes>Class
+HttpUrl
+--
+-HEX_DIGITS: char[] 
+-USERNAME_ENCODE_SET: String 
+-PASSWORD_ENCODE_SET: String 
+-PATH_SEGMENT_ENCODE_SET: String 
+-PATH_SEGMENT_ENCODE_SET_URI: String 
+-QUERY_ENCODE_SET: String 
+-QUERY_COMPONENT_REENCODE_SET: String 
+-QUERY_COMPONENT_ENCODE_SET: String 
+-QUERY_COMPONENT_ENCODE_SET_URI: String 
+-FORM_ENCODE_SET: String 
+-FRAGMENT_ENCODE_SET: String 
+-FRAGMENT_ENCODE_SET_URI: String 
+-scheme: String
+-username: String
+-password: String
+-host: String
+-port: int
+-pathSegments: List&lt;String&gt;
+-queryNamesAndValues: List&lt;String&gt;
+-fragment: String
+-url: String
+--
+-HttpUrl(Builder)
++url(): URL
++uri(): URI
++scheme(): String
++isHttps(): boolean
++encodedUsername(): String
++username(): String
++encodedPassword(): String
++password(): String
++host(): String
++port(): int
++defaultPort(String): int
++pathSize(): int
++encodedPath(): String
+-pathSegmentsToString(StringBuilder, List&lt;String&gt;): void
++encodedPathSegments(): List&lt;String&gt;
++pathSegments(): List&lt;String&gt;
++encodedQuery(): String
+-namesAndValuesToQueryString(StringBuilder, List&lt;String&gt;): void
+-queryStringToNamesAndValues(String): List&lt;String&gt;
++query(): String
++querySize(): int
++queryParameter(String): String
++queryParameterNames(): Set&lt;String&gt;
++queryParameterValues(String): List&lt;String&gt;
++queryParameterName(int): String
++queryParameterValue(int): String
++encodedFragment(): String
++fragment(): String
++redact(): String
++resolve(String): HttpUrl
++newBuilder(): Builder
++newBuilder(String): Builder
++parse(String): HttpUrl
++get(URL): HttpUrl
+-getChecked(String): HttpUrl
++get(URI): HttpUrl
++topPrivateDomain(): String
+-percentDecode(String, boolean): String
+-percentDecode(List&lt;String&gt;, boolean): List&lt;String&gt;
+-percentDecode(String, int, int, boolean): String
+-percentDecode(Buffer, String, int, int, boolean): void
+-percentEncoded(String, int, int): boolean
+-canonicalize(String, int, int, String, boolean, boolean, boolean, ...): String
+-canonicalize(Buffer, String, int, int, String, boolean, boolean, ...): void
+-canonicalize(String, String, boolean, boolean, boolean, boolean, Charset): String
+-canonicalize(String, String, boolean, boolean, boolean, boolean): String
+--
+{innerclass
+Class
+Builder
+--
+-scheme: String
+-encodedUsername: String 
+-encodedPassword: String 
+-host: String
+-port: int 
+-encodedPathSegments: List&lt;String&gt; 
+-encodedQueryNamesAndValues: List&lt;String&gt;
+-encodedFragment: String
+--
++Builder()
++scheme(String): Builder
++username(String): Builder
++encodedUsername(String): Builder
++password(String): Builder
++encodedPassword(String): Builder
++host(String): Builder
++port(int): Builder
+-effectivePort(): int
++addPathSegment(String): Builder
++addPathSegments(String): Builder
++addEncodedPathSegment(String): Builder
++addEncodedPathSegments(String): Builder
+-addPathSegments(String, boolean): Builder
++setPathSegment(int, String): Builder
++setEncodedPathSegment(int, String): Builder
++removePathSegment(int): Builder
++encodedPath(String): Builder
++query(String): Builder
++encodedQuery(String): Builder
++addQueryParameter(String, String): Builder
++addEncodedQueryParameter(String, String): Builder
++setQueryParameter(String, String): Builder
++setEncodedQueryParameter(String, String): Builder
++removeAllQueryParameters(String): Builder
++removeAllEncodedQueryParameters(String): Builder
+-removeAllCanonicalQueryParameters(String): void
++fragment(String): Builder
++encodedFragment(String): Builder
+-reencodeForUri(): Builder
++build(): HttpUrl
+-parse(HttpUrl, String): ParseResult
+-resolvePath(String, int, int): void
+-push(String, int, int, boolean, boolean): void
+-isDot(String): boolean
+-isDotDot(String): boolean
+-pop(): void
+-schemeDelimiterOffset(String, int, int): int
+-slashCount(String, int, int): int
+-portColonOffset(String, int, int): int
+-canonicalizeHost(String, int, int): String
+-parsePort(String, int, int): int
+--
+{innerclass
+Enum
+ParseResult
+--
++SUCCESS: ParseResult
++MISSING_SCHEME: ParseResult
++UNSUPPORTED_SCHEME: ParseResult
++INVALID_PORT: ParseResult
++INVALID_HOST: ParseResult
+innerclass}
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>658</x>
+      <y>458</y>
+      <w>56</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>Class
+RequestBody
+--
++contentType(): MediaType
++contentLength(): long
++writeTo(BufferedSink): void
++create(MediaType, String): RequestBody
++create(MediaType, ByteString): RequestBody
++create(MediaType, byte[]): RequestBody
++create(MediaType, byte[], int, int): RequestBody
++create(MediaType, File): RequestBody
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>620</x>
+      <y>500</y>
+      <w>64</w>
+      <h>156</h>
+    </coordinates>
+    <panel_attributes>Class
+MultipartBody
+--
++MIXED: MediaType 
++ALTERNATIVE: MediaType 
++DIGEST: MediaType 
++PARALLEL: MediaType 
++FORM: MediaType 
+-COLONSPACE: byte[] 
+-CRLF: byte[] 
+-DASHDASH: byte[] 
+-boundary: ByteString
+-originalType: MediaType
+-contentType: MediaType
+-parts: List&lt;Part&gt;
+-contentLength: long 
+--
+-MultipartBody(ByteString, MediaType, List&lt;Part&gt;)
++type(): MediaType
++boundary(): String
++size(): int
++parts(): List&lt;Part&gt;
++part(int): Part
++contentType(): MediaType
++contentLength(): long
++writeTo(BufferedSink): void
+-writeOrCountBytes(BufferedSink, boolean): long
+-appendQuotedString(StringBuilder, String): StringBuilder
+--
+{innerclass
+Class
+Part
+--
+-headers: Headers
+-body: RequestBody
+--
++create(RequestBody): Part
++create(Headers, RequestBody): Part
++createFormData(String, String): Part
++createFormData(String, String, RequestBody): Part
+-Part(Headers, RequestBody)
++headers(): Headers
++body(): RequestBody
+innerclass}
+{innerclass
+Class
+Builder
+--
+-boundary: ByteString
+-type: MediaType 
+-parts: List&lt;Part&gt; 
+--
++Builder()
++Builder(String)
++setType(MediaType): Builder
++addPart(RequestBody): Builder
++addPart(Headers, RequestBody): Builder
++addFormDataPart(String, String): Builder
++addFormDataPart(String, String, RequestBody): Builder
++addPart(Part): Builder
++build(): MultipartBody
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>790</x>
+      <y>376</y>
+      <w>42</w>
+      <h>158</h>
+    </coordinates>
+    <panel_attributes>Class
+CacheControl
+--
++FORCE_NETWORK: CacheControl 
++FORCE_CACHE: CacheControl 
+-noCache: boolean
+-noStore: boolean
+-maxAgeSeconds: int
+-sMaxAgeSeconds: int
+-isPrivate: boolean
+-isPublic: boolean
+-mustRevalidate: boolean
+-maxStaleSeconds: int
+-minFreshSeconds: int
+-onlyIfCached: boolean
+-noTransform: boolean
+-immutable: boolean
+-headerValue: String
+--
+-CacheControl(boolean, boolean, int, int, boolean, boolean, boolean, ...)
+-CacheControl(Builder)
++noCache(): boolean
++noStore(): boolean
++maxAgeSeconds(): int
++sMaxAgeSeconds(): int
++isPrivate(): boolean
++isPublic(): boolean
++mustRevalidate(): boolean
++maxStaleSeconds(): int
++minFreshSeconds(): int
++onlyIfCached(): boolean
++noTransform(): boolean
++immutable(): boolean
++parse(Headers): CacheControl
+-headerValue(): String
+--
+{innerclass
+Class
+Builder
+--
+-noCache: boolean
+-noStore: boolean
+-maxAgeSeconds: int 
+-maxStaleSeconds: int 
+-minFreshSeconds: int 
+-onlyIfCached: boolean
+-noTransform: boolean
+-immutable: boolean
+--
++noCache(): Builder
++noStore(): Builder
++maxAge(int, TimeUnit): Builder
++maxStale(int, TimeUnit): Builder
++minFresh(int, TimeUnit): Builder
++onlyIfCached(): Builder
++noTransform(): Builder
++immutable(): Builder
++build(): CacheControl
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>914</x>
+      <y>294</y>
+      <w>48</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>Class
+BridgeInterceptor
+--
+-cookieJar: CookieJar
+--
++BridgeInterceptor(CookieJar)
++intercept(Chain): Response
+-cookieHeader(List&lt;Cookie&gt;): String
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1018</x>
+      <y>294</y>
+      <w>42</w>
+      <h>38</h>
+    </coordinates>
+    <panel_attributes>Class
+CallServerInterceptor
+--
+-forWebSocket: boolean
+--
++CallServerInterceptor(boolean)
++intercept(Chain): Response
+--
+{innerclass
+Class
+CountingSink
+--
+-successfulCount: long
+--
+-CountingSink(Sink)
++write(Buffer, long): void
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>970</x>
+      <y>294</y>
+      <w>42</w>
+      <h>26</h>
+    </coordinates>
+    <panel_attributes>Class
+ConnectInterceptor
+--
++client: OkHttpClient
+--
++ConnectInterceptor(OkHttpClient)
++intercept(Chain): Response
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1070</x>
+      <y>292</y>
+      <w>42</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>Class
+HttpLoggingInterceptor
+--
+-UTF8: Charset 
+-logger: Logger
+-level: Level 
+--
++HttpLoggingInterceptor()
++HttpLoggingInterceptor(Logger)
++setLevel(Level): HttpLoggingInterceptor
++getLevel(): Level
++intercept(Chain): Response
+-isPlaintext(Buffer): boolean
+-bodyHasUnknownEncoding(Headers): boolean
+--
+{innerclass
+Enum
+Level
+--
++NONE: Level
++BASIC: Level
++HEADERS: Level
++BODY: Level
+innerclass}
+{innerclass
+Interface
+Logger
+--
++DEFAULT: Logger 
+--
++log(String): void
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1124</x>
+      <y>292</y>
+      <w>74</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>Class
+RetryAndFollowUpInterceptor
+--
+-MAX_FOLLOW_UPS: int 
+-client: OkHttpClient
+-forWebSocket: boolean
+-streamAllocation: StreamAllocation
+-callStackTrace: Object
+-canceled: boolean
+--
++RetryAndFollowUpInterceptor(OkHttpClient, boolean)
++cancel(): void
++isCanceled(): boolean
++setCallStackTrace(Object): void
++streamAllocation(): StreamAllocation
++intercept(Chain): Response
+-createAddress(HttpUrl): Address
+-recover(IOException, StreamAllocation, boolean, Request): boolean
+-isRecoverable(IOException, boolean): boolean
+-followUpRequest(Response, Route): Request
+-retryAfter(Response, int): int
+-sameConnection(Response, HttpUrl): boolean
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>682</x>
+      <y>148</y>
+      <w>42</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>Interface
+Call
+--
++request(): Request
++execute(): Response
++enqueue(Callback): void
++cancel(): void
++isExecuted(): boolean
++isCanceled(): boolean
++clone(): Call
+--
+{innerclass
+Interface
+Factory
+--
++newCall(Request): Call
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>304</x>
+      <y>134</y>
+      <w>82</w>
+      <h>368</h>
+    </coordinates>
+    <panel_attributes>Class
+OkHttpClient
+--
+-DEFAULT_PROTOCOLS: List&lt;Protocol&gt; 
+-DEFAULT_CONNECTION_SPECS: List&lt;ConnectionSpec&gt; 
+-dispatcher: Dispatcher
+-proxy: Proxy
+-protocols: List&lt;Protocol&gt;
+-connectionSpecs: List&lt;ConnectionSpec&gt;
+-interceptors: List&lt;Interceptor&gt;
+-networkInterceptors: List&lt;Interceptor&gt;
+-eventListenerFactory: Factory
+-proxySelector: ProxySelector
+-cookieJar: CookieJar
+-cache: Cache
+-internalCache: InternalCache
+-socketFactory: SocketFactory
+-sslSocketFactory: SSLSocketFactory
+-certificateChainCleaner: CertificateChainCleaner
+-hostnameVerifier: HostnameVerifier
+-certificatePinner: CertificatePinner
+-proxyAuthenticator: Authenticator
+-authenticator: Authenticator
+-connectionPool: ConnectionPool
+-dns: Dns
+-followSslRedirects: boolean
+-followRedirects: boolean
+-retryOnConnectionFailure: boolean
+-connectTimeout: int
+-readTimeout: int
+-writeTimeout: int
+-pingInterval: int
+--
++OkHttpClient()
+-OkHttpClient(Builder)
+-systemDefaultTrustManager(): X509TrustManager
+-systemDefaultSslSocketFactory(X509TrustManager): SSLSocketFactory
++connectTimeoutMillis(): int
++readTimeoutMillis(): int
++writeTimeoutMillis(): int
++pingIntervalMillis(): int
++proxy(): Proxy
++proxySelector(): ProxySelector
++cookieJar(): CookieJar
++cache(): Cache
+-internalCache(): InternalCache
++dns(): Dns
++socketFactory(): SocketFactory
++sslSocketFactory(): SSLSocketFactory
++hostnameVerifier(): HostnameVerifier
++certificatePinner(): CertificatePinner
++authenticator(): Authenticator
++proxyAuthenticator(): Authenticator
++connectionPool(): ConnectionPool
++followSslRedirects(): boolean
++followRedirects(): boolean
++retryOnConnectionFailure(): boolean
++dispatcher(): Dispatcher
++protocols(): List&lt;Protocol&gt;
++connectionSpecs(): List&lt;ConnectionSpec&gt;
++interceptors(): List&lt;Interceptor&gt;
++networkInterceptors(): List&lt;Interceptor&gt;
++eventListenerFactory(): Factory
++newCall(Request): Call
++newWebSocket(Request, WebSocketListener): WebSocket
++newBuilder(): Builder
+--
+{innerclass
+Class
+Builder
+--
+-dispatcher: Dispatcher
+-proxy: Proxy
+-protocols: List&lt;Protocol&gt;
+-connectionSpecs: List&lt;ConnectionSpec&gt;
+-interceptors: List&lt;Interceptor&gt; 
+-networkInterceptors: List&lt;Interceptor&gt; 
+-eventListenerFactory: Factory
+-proxySelector: ProxySelector
+-cookieJar: CookieJar
+-cache: Cache
+-internalCache: InternalCache
+-socketFactory: SocketFactory
+-sslSocketFactory: SSLSocketFactory
+-certificateChainCleaner: CertificateChainCleaner
+-hostnameVerifier: HostnameVerifier
+-certificatePinner: CertificatePinner
+-proxyAuthenticator: Authenticator
+-authenticator: Authenticator
+-connectionPool: ConnectionPool
+-dns: Dns
+-followSslRedirects: boolean
+-followRedirects: boolean
+-retryOnConnectionFailure: boolean
+-connectTimeout: int
+-readTimeout: int
+-writeTimeout: int
+-pingInterval: int
+--
++Builder()
+-Builder(OkHttpClient)
++connectTimeout(long, TimeUnit): Builder
++readTimeout(long, TimeUnit): Builder
++writeTimeout(long, TimeUnit): Builder
++pingInterval(long, TimeUnit): Builder
++proxy(Proxy): Builder
++proxySelector(ProxySelector): Builder
++cookieJar(CookieJar): Builder
+-setInternalCache(InternalCache): void
++cache(Cache): Builder
++dns(Dns): Builder
++socketFactory(SocketFactory): Builder
++sslSocketFactory(SSLSocketFactory): Builder
++sslSocketFactory(SSLSocketFactory, X509TrustManager): Builder
++hostnameVerifier(HostnameVerifier): Builder
++certificatePinner(CertificatePinner): Builder
++authenticator(Authenticator): Builder
++proxyAuthenticator(Authenticator): Builder
++connectionPool(ConnectionPool): Builder
++followSslRedirects(boolean): Builder
++followRedirects(boolean): Builder
++retryOnConnectionFailure(boolean): Builder
++dispatcher(Dispatcher): Builder
++protocols(List&lt;Protocol&gt;): Builder
++connectionSpecs(List&lt;ConnectionSpec&gt;): Builder
++interceptors(): List&lt;Interceptor&gt;
++addInterceptor(Interceptor): Builder
++networkInterceptors(): List&lt;Interceptor&gt;
++addNetworkInterceptor(Interceptor): Builder
++eventListener(EventListener): Builder
++eventListenerFactory(Factory): Builder
++build(): OkHttpClient
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>746</x>
+      <y>152</y>
+      <w>68</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>Class
+RealCall
+--
+-client: OkHttpClient
+-retryAndFollowUpInterceptor: RetryAndFollowUpInterceptor
+-eventListener: EventListener
+-originalRequest: Request
+-forWebSocket: boolean
+-executed: boolean
+--
+-RealCall(OkHttpClient, Request, boolean)
+-newRealCall(OkHttpClient, Request, boolean): RealCall
++request(): Request
++execute(): Response
+-captureCallStackTrace(): void
++enqueue(Callback): void
++cancel(): void
++isExecuted(): boolean
++isCanceled(): boolean
++clone(): RealCall
+-streamAllocation(): StreamAllocation
+-toLoggableString(): String
+-redactedUrl(): String
+-getResponseWithInterceptorChain(): Response
+--
+{innerclass
+Class
+AsyncCall
+--
+-responseCallback: Callback
+--
+-AsyncCall(Callback)
+-host(): String
+-request(): Request
+-get(): RealCall
+-execute(): void
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>774</x>
+      <y>22</y>
+      <w>54</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Class
+ResponseBody
+--
+-reader: Reader
+--
++contentType(): MediaType
++contentLength(): long
++byteStream(): InputStream
++source(): BufferedSource
++bytes(): byte[]
++charStream(): Reader
++string(): String
+-charset(): Charset
++close(): void
++create(MediaType, String): ResponseBody
++create(MediaType, byte[]): ResponseBody
++create(MediaType, long, BufferedSource): ResponseBody
+--
+{innerclass
+Class
+BomAwareReader
+--
+-source: BufferedSource
+-charset: Charset
+-closed: boolean
+-delegate: Reader
+--
+-BomAwareReader(BufferedSource, Charset)
++read(char[], int, int): int
++close(): void
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>912</x>
+      <y>346</y>
+      <w>24</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>Interface
+CacheRequest
+--
++body(): Sink
++abort(): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>542</x>
+      <y>218</y>
+      <w>42</w>
+      <h>214</h>
+    </coordinates>
+    <panel_attributes>Class
+Response
+--
+-request: Request
+-protocol: Protocol
+-code: int
+-message: String
+-handshake: Handshake
+-headers: Headers
+-body: ResponseBody
+-networkResponse: Response
+-cacheResponse: Response
+-priorResponse: Response
+-sentRequestAtMillis: long
+-receivedResponseAtMillis: long
+-cacheControl: CacheControl
+--
+-Response(Builder)
++request(): Request
++protocol(): Protocol
++code(): int
++isSuccessful(): boolean
++message(): String
++handshake(): Handshake
++headers(String): List&lt;String&gt;
++header(String): String
++header(String, String): String
++headers(): Headers
++peekBody(long): ResponseBody
++body(): ResponseBody
++newBuilder(): Builder
++isRedirect(): boolean
++networkResponse(): Response
++cacheResponse(): Response
++priorResponse(): Response
++challenges(): List&lt;Challenge&gt;
++cacheControl(): CacheControl
++sentRequestAtMillis(): long
++receivedResponseAtMillis(): long
++close(): void
+--
+{innerclass
+Class
+Builder
+--
+-request: Request
+-protocol: Protocol
+-code: int 
+-message: String
+-handshake: Handshake
+-headers: Builder
+-body: ResponseBody
+-networkResponse: Response
+-cacheResponse: Response
+-priorResponse: Response
+-sentRequestAtMillis: long
+-receivedResponseAtMillis: long
+--
++Builder()
+-Builder(Response)
++request(Request): Builder
++protocol(Protocol): Builder
++code(int): Builder
++message(String): Builder
++handshake(Handshake): Builder
++header(String, String): Builder
++addHeader(String, String): Builder
++removeHeader(String): Builder
++headers(Headers): Builder
++body(ResponseBody): Builder
++networkResponse(Response): Builder
++cacheResponse(Response): Builder
+-checkSupportResponse(String, Response): void
++priorResponse(Response): Builder
+-checkPriorResponse(Response): void
++sentRequestAtMillis(long): Builder
++receivedResponseAtMillis(long): Builder
++build(): Response
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>510</x>
+      <y>456</y>
+      <w>64</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>Class
+ResponseBody
+--
+-reader: Reader
+--
++contentType(): MediaType
++contentLength(): long
++byteStream(): InputStream
++source(): BufferedSource
++bytes(): byte[]
++charStream(): Reader
++string(): String
+-charset(): Charset
++close(): void
++create(MediaType, String): ResponseBody
++create(MediaType, byte[]): ResponseBody
++create(MediaType, long, BufferedSource): ResponseBody
+--
+{innerclass
+Class
+BomAwareReader
+--
+-source: BufferedSource
+-charset: Charset
+-closed: boolean
+-delegate: Reader
+--
+-BomAwareReader(BufferedSource, Charset)
++read(char[], int, int): int
++close(): void
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>512</x>
+      <y>542</y>
+      <w>56</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>Class
+RealResponseBody
+--
+-contentTypeString: String
+-contentLength: long
+-source: BufferedSource
+--
++RealResponseBody(String, long, BufferedSource)
++contentType(): MediaType
++contentLength(): long
++source(): BufferedSource
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>198</x>
+      <y>144</y>
+      <w>84</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>Class
+Platform
+--
+-PLATFORM: Platform 
++INFO: int 
++WARN: int 
+-logger: Logger 
+--
++get(): Platform
++getPrefix(): String
+-trustManager(SSLSocketFactory): X509TrustManager
++configureTlsExtensions(SSLSocket, String, List&lt;Protocol&gt;): void
++afterHandshake(SSLSocket): void
++getSelectedProtocol(SSLSocket): String
++connectSocket(Socket, InetSocketAddress, int): void
++log(int, String, Throwable): void
++isCleartextTrafficPermitted(String): boolean
++getStackTraceForCloseable(String): Object
++logCloseableLeak(String, Object): void
++alpnProtocolNames(List&lt;Protocol&gt;): List&lt;String&gt;
++buildCertificateChainCleaner(X509TrustManager): CertificateChainCleaner
++buildCertificateChainCleaner(SSLSocketFactory): CertificateChainCleaner
++isConscryptPreferred(): boolean
+-findPlatform(): Platform
+-concatLengthPrefixed(List&lt;Protocol&gt;): byte[]
+-readFieldOrNull(Object, Class&lt;T&gt;, String): T
++getSSLContext(): SSLContext
++buildTrustRootIndex(X509TrustManager): TrustRootIndex
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>194</x>
+      <y>252</y>
+      <w>86</w>
+      <h>146</h>
+    </coordinates>
+    <panel_attributes>Class
+AndroidPlatform
+--
+-MAX_LOG_LENGTH: int 
+-sslParametersClass: Class&lt;?&gt;
+-setUseSessionTickets: OptionalMethod&lt;Socket&gt;
+-setHostname: OptionalMethod&lt;Socket&gt;
+-getAlpnSelectedProtocol: OptionalMethod&lt;Socket&gt;
+-setAlpnProtocols: OptionalMethod&lt;Socket&gt;
+-closeGuard: CloseGuard 
+--
+-AndroidPlatform(Class&lt;?&gt;, OptionalMethod&lt;Socket&gt;, OptionalMethod&lt;Socket&gt;, OptionalMethod&lt;Socket&gt;, OptionalMethod&lt;Socket&gt;)
++connectSocket(Socket, InetSocketAddress, int): void
+-trustManager(SSLSocketFactory): X509TrustManager
++configureTlsExtensions(SSLSocket, String, List&lt;Protocol&gt;): void
++getSelectedProtocol(SSLSocket): String
++log(int, String, Throwable): void
++getStackTraceForCloseable(String): Object
++logCloseableLeak(String, Object): void
++isCleartextTrafficPermitted(String): boolean
+-api24IsCleartextTrafficPermitted(String, Class&lt;?&gt;, Object): boolean
+-api23IsCleartextTrafficPermitted(String, Class&lt;?&gt;, Object): boolean
+-supportsAlpn(): boolean
++buildCertificateChainCleaner(X509TrustManager): CertificateChainCleaner
++buildIfSupported(): Platform
++buildTrustRootIndex(X509TrustManager): TrustRootIndex
+--
+{innerclass
+Class
+AndroidCertificateChainCleaner
+--
+-x509TrustManagerExtensions: Object
+-checkServerTrusted: Method
+--
+-AndroidCertificateChainCleaner(Object, Method)
++clean(List&lt;Certificate&gt;, String): List&lt;Certificate&gt;
+innerclass}
+{innerclass
+Class
+CloseGuard
+--
+-getMethod: Method
+-openMethod: Method
+-warnIfOpenMethod: Method
+--
+-CloseGuard(Method, Method, Method)
+-createAndOpen(String): Object
+-warnIfOpen(Object): boolean
+-get(): CloseGuard
+innerclass}
+{innerclass
+Class
+AndroidTrustRootIndex
+--
+-trustManager: X509TrustManager
+-findByIssuerAndSignatureMethod: Method
+--
+-AndroidTrustRootIndex(X509TrustManager, Method)
++findByIssuerAndSignature(X509Certificate): X509Certificate
+innerclass}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
